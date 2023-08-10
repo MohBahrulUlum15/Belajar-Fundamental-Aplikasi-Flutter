@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:latihan_set_state/providers/done_module_provider.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,13 +12,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return ChangeNotifierProvider(
+      create: (context) => DoneModuleProvider(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: const ModulPage(),
       ),
-      home: const ModulPage(),
     );
   }
 }
@@ -83,15 +89,19 @@ class _ModuleListState extends State<ModuleList> {
     return ListView.builder(
         itemCount: _moduleList.length,
         itemBuilder: (context, index) {
-          return ModuleTile(
-            moduleName: _moduleList[index],
-            isDone: widget.doneModuleList.contains(
-              _moduleList[index],
-            ),
-            onClick: () {
-              setState(() {
-                widget.doneModuleList.add(_moduleList[index]);
-              });
+          return Consumer<DoneModuleProvider>(
+            builder: (context, DoneModuleProvider data, widget) {
+              return ModuleTile(
+                moduleName: _moduleList[index],
+                isDone: data.doneModuleList.contains(
+                  _moduleList[index],
+                ),
+                onClick: () {
+                  setState(() {
+                    data.complete(_moduleList[index]);
+                  });
+                },
+              );
             },
           );
         });
@@ -130,6 +140,7 @@ class DoneModulList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final doneModuleList = Provider.of<DoneModuleProvider>(context, listen: false).doneModuleList;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Done Module List'),
