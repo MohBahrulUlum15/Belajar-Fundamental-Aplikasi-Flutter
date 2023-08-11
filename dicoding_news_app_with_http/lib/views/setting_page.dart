@@ -1,17 +1,28 @@
-import 'package:dicoding_news_app/common/styles.dart';
 import 'package:dicoding_news_app/widgets/platform_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatelessWidget {
-  const SettingsPage({super.key});
+  static const String settingsTitle = 'Settings';
 
-  @override
-  Widget build(BuildContext context) {
-    return PlatformWidget(
-      androidBuilder: _buildAndroid,
-      iosBuilder: _buildIos,
+  const SettingsPage({Key? key}) : super(key: key);
+
+  Widget _buildAndroid(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(settingsTitle),
+      ),
+      body: _buildList(context),
+    );
+  }
+
+  Widget _buildIos(BuildContext context) {
+    return CupertinoPageScaffold(
+      navigationBar: const CupertinoNavigationBar(
+        middle: Text(settingsTitle),
+      ),
+      child: _buildList(context),
     );
   }
 
@@ -35,10 +46,7 @@ class SettingsPage extends StatelessWidget {
                                 const Text('This feature will be coming soon!'),
                             actions: [
                               CupertinoDialogAction(
-                                child: const Text(
-                                  'Ok',
-                                  style: TextStyle(color: secondaryColor),
-                                ),
+                                child: const Text('Ok'),
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
@@ -59,10 +67,7 @@ class SettingsPage extends StatelessWidget {
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
-                                child: const Text(
-                                  'Ok',
-                                  style: TextStyle(color: secondaryColor),
-                                ),
+                                child: const Text('Ok'),
                               ),
                             ],
                           );
@@ -76,21 +81,11 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildAndroid(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Settings'),
-      ),
-      body: _buildList(context),
-    );
-  }
-
-  Widget _buildIos(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
-        middle: Text('Settings'),
-      ),
-      child: _buildList(context),
+  @override
+  Widget build(BuildContext context) {
+    return PlatformWidget(
+      androidBuilder: _buildAndroid,
+      iosBuilder: _buildIos,
     );
   }
 }

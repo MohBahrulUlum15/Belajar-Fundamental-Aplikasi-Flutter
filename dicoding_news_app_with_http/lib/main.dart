@@ -7,12 +7,6 @@ import 'package:flutter/material.dart';
 import 'views/home_page.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  // if (Platform.isAndroid) {
-  //   WebView.platform = SurfaceAndroidWebView();
-  // } else if(Platform.isIOS) {
-  //   WebView.platform = CupertinoWebView();
-  // }
   runApp(const MyApp());
 }
 
@@ -23,7 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'News App',
       theme: ThemeData(
         colorScheme: Theme.of(context).colorScheme.copyWith(
               primary: primaryColor,
@@ -47,9 +41,9 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      initialRoute: NewsListPage.routeName,
+      initialRoute: HomePage.routeName,
       routes: {
-        NewsListPage.routeName: (context) => const NewsListPage(),
+        HomePage.routeName: (context) => const HomePage(),
         ArticleDetailPage.routeName: (context) => ArticleDetailPage(
               article: ModalRoute.of(context)?.settings.arguments as Article,
             ),
